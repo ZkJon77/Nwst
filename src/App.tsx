@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paintbrush } from "lucide-react";
+import { Paintbrush, ShoppingCart } from "lucide-react";
 
 interface Product {
   id: number;
@@ -31,7 +31,6 @@ const ProductCard: React.FC<ProductProps> = ({
       />
 
       <div className="py-3">
-
         <span className="text-xs text-blue-600 font-bold uppercase">
           {category}
         </span>
@@ -43,7 +42,6 @@ const ProductCard: React.FC<ProductProps> = ({
         <p className="text-xl font-semibold mt-1">
           R$ {price.toFixed(2).replace(".", ",")}
         </p>
-
       </div>
 
       <button
@@ -52,7 +50,6 @@ const ProductCard: React.FC<ProductProps> = ({
       >
         Adicionar ao Carrinho
       </button>
-
     </div>
   );
 };
@@ -62,6 +59,9 @@ function App() {
   const [page, setPage] = useState("produtos");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [carCode, setCarCode] = useState("");
+
+  const [cart, setCart] = useState<Product[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const categories = [
     "Todos",
@@ -75,101 +75,24 @@ function App() {
 
   const products: Product[] = [
 
-    // TINTAS
-    {
-      id: 1,
-      name: "Tinta PU Automotiva Preto 3,6L",
-      price: 189.9,
-      imageUrl: "https://tse4.mm.bing.net/th/id/OIP.4zWZc9f3nS2uR6pTj6m0UQHaHa",
-      category: "Tintas",
-    },
-    {
-      id: 2,
-      name: "Primer PU Cinza 3,6L",
-      price: 149.9,
-      imageUrl: "https://tse3.mm.bing.net/th/id/OIP.qO6MysNn7M8jYzY2wqKz6QHaHa",
-      category: "Tintas",
-    },
+    { id: 1, name: "Tinta PU Automotiva Preto 3,6L", price: 189.9, imageUrl: "https://tse4.mm.bing.net/th/id/OIP.4zWZc9f3nS2uR6pTj6m0UQHaHa", category: "Tintas" },
+    { id: 2, name: "Primer PU Cinza 3,6L", price: 149.9, imageUrl: "https://tse3.mm.bing.net/th/id/OIP.qO6MysNn7M8jYzY2wqKz6QHaHa", category: "Tintas" },
 
-    // VERNIZES
-    {
-      id: 3,
-      name: "Verniz PU Auto Luks Kit Catalisador",
-      price: 129.9,
-      imageUrl: "https://cdn.awsli.com.br/2500x2500/1869/1869036/produto/153855114/3ca522bacc.jpg",
-      category: "Vernizes",
-    },
-    {
-      id: 4,
-      name: "Verniz Alto Brilho 2K 900ml",
-      price: 59.9,
-      imageUrl: "https://tse3.mm.bing.net/th/id/OIP.S1A3E0wPj6q4K2fW7ZP3yAHaHa",
-      category: "Vernizes",
-    },
+    { id: 3, name: "Verniz PU Auto Luks Kit Catalisador", price: 129.9, imageUrl: "https://cdn.awsli.com.br/2500x2500/1869/1869036/produto/153855114/3ca522bacc.jpg", category: "Vernizes" },
+    { id: 4, name: "Verniz Alto Brilho 2K 900ml", price: 59.9, imageUrl: "https://tse3.mm.bing.net/th/id/OIP.S1A3E0wPj6q4K2fW7ZP3yAHaHa", category: "Vernizes" },
 
-    // THINNER
-    {
-      id: 5,
-      name: "Thinner 900ml Anjo",
-      price: 19.9,
-      imageUrl: "https://cdn.awsli.com.br/600x700/1347/1347540/produto/53873337/thinner-900ml-anjo.jpg",
-      category: "Thinner",
-    },
-    {
-      id: 6,
-      name: "Thinner Automotivo 5L",
-      price: 79.9,
-      imageUrl: "https://tse4.mm.bing.net/th/id/OIP.t7f9S7YoY4-lqYh6xK-EdAHaHa",
-      category: "Thinner",
-    },
+    { id: 5, name: "Thinner 900ml Anjo", price: 19.9, imageUrl: "https://cdn.awsli.com.br/600x700/1347/1347540/produto/53873337/thinner-900ml-anjo.jpg", category: "Thinner" },
+    { id: 6, name: "Thinner Automotivo 5L", price: 79.9, imageUrl: "https://tse4.mm.bing.net/th/id/OIP.t7f9S7YoY4-lqYh6xK-EdAHaHa", category: "Thinner" },
 
-    // ESMALTES
-    {
-      id: 7,
-      name: "Esmalte Sintético Branco 3,6L",
-      price: 89.9,
-      imageUrl: "https://m.media-amazon.com/images/I/5156f0sCGDL._AC_SX679_.jpg",
-      category: "Esmaltes",
-    },
-    {
-      id: 8,
-      name: "Esmalte Sintético Preto 900ml",
-      price: 39.9,
-      imageUrl: "https://tse3.mm.bing.net/th/id/OIP.wLkWg5p0FZsPZt8cQh4M6QHaHa",
-      category: "Esmaltes",
-    },
+    { id: 7, name: "Esmalte Sintético Branco 3,6L", price: 89.9, imageUrl: "https://m.media-amazon.com/images/I/5156f0sCGDL._AC_SX679_.jpg", category: "Esmaltes" },
+    { id: 8, name: "Esmalte Sintético Preto 900ml", price: 39.9, imageUrl: "https://tse3.mm.bing.net/th/id/OIP.wLkWg5p0FZsPZt8cQh4M6QHaHa", category: "Esmaltes" },
 
-    // ACESSORIOS
-    {
-      id: 9,
-      name: "Lixa Seco 3M",
-      price: 12.9,
-      imageUrl: "https://tse1.mm.bing.net/th/id/OIP.DiVr9zcgxxO9nhRw7rS2xQHaHa",
-      category: "Acessórios",
-    },
-    {
-      id: 10,
-      name: "Fita Crepe Automotiva 3M",
-      price: 14.9,
-      imageUrl: "https://tse2.mm.bing.net/th/id/OIP.h9V1oQeQ5KXx8kJvU9oTzwHaHa",
-      category: "Acessórios",
-    },
-    {
-      id: 11,
-      name: "Espátula Plástica",
-      price: 9.9,
-      imageUrl: "https://tse4.mm.bing.net/th/id/OIP.6vO9X4Z9iE8vVqT5Y1C5DQHaHa",
-      category: "Acessórios",
-    },
+    { id: 9, name: "Lixa Seco 3M", price: 12.9, imageUrl: "https://tse1.mm.bing.net/th/id/OIP.DiVr9zcgxxO9nhRw7rS2xQHaHa", category: "Acessórios" },
+    { id: 10, name: "Fita Crepe Automotiva 3M", price: 14.9, imageUrl: "https://tse2.mm.bing.net/th/id/OIP.h9V1oQeQ5KXx8kJvU9oTzwHaHa", category: "Acessórios" },
+    { id: 11, name: "Espátula Plástica", price: 9.9, imageUrl: "https://tse4.mm.bing.net/th/id/OIP.6vO9X4Z9iE8vVqT5Y1C5DQHaHa", category: "Acessórios" },
 
-    // FERRAMENTAS
-    {
-      id: 12,
-      name: "Pistola de Pintura HVLP Pro-530",
-      price: 249.9,
-      imageUrl: "https://casadosoldador.com.br/files/products_images/18952/pistola-de-pintura-hvlp-pro-530-bico-13-600ml-pdr-casa-do-soldador-01.jpg",
-      category: "Ferramentas",
-    },
+    { id: 12, name: "Pistola de Pintura HVLP Pro-530", price: 249.9, imageUrl: "https://casadosoldador.com.br/files/products_images/18952/pistola-de-pintura-hvlp-pro-530-bico-13-600ml-pdr-casa-do-soldador-01.jpg", category: "Ferramentas" },
+
   ];
 
   const filteredProducts =
@@ -178,8 +101,15 @@ function App() {
       : products.filter((p) => p.category === selectedCategory);
 
   const handleAddToCart = (id: number) => {
-    console.log("Produto adicionado:", id);
+    const product = products.find((p) => p.id === id);
+    if (product) setCart([...cart, product]);
   };
+
+  const removeFromCart = (index: number) => {
+    setCart(cart.filter((_, i) => i !== index));
+  };
+
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -193,7 +123,7 @@ function App() {
           <h1 className="text-2xl font-bold">Silvertintas</h1>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
 
           <button onClick={() => setPage("produtos")}>
             Produtos
@@ -201,6 +131,20 @@ function App() {
 
           <button onClick={() => setPage("cor")}>
             Código da Cor
+          </button>
+
+          <button
+            onClick={() => setCartOpen(true)}
+            className="relative"
+          >
+            <ShoppingCart size={26} />
+
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-xs px-2 rounded-full">
+                {cart.length}
+              </span>
+            )}
+
           </button>
 
         </div>
@@ -215,8 +159,6 @@ function App() {
           <h2 className="text-3xl font-bold text-center mb-6">
             Produtos
           </h2>
-
-          {/* categorias */}
 
           <div className="flex flex-wrap justify-center gap-3 mb-8">
 
@@ -235,8 +177,6 @@ function App() {
             ))}
 
           </div>
-
-          {/* produtos */}
 
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
 
@@ -278,11 +218,7 @@ function App() {
 
             <button
               className="mt-4 w-full bg-blue-600 text-white py-2 rounded"
-              onClick={() =>
-                alert(
-                  `Código enviado ao colorista: ${carCode}`
-                )
-              }
+              onClick={() => alert(`Código enviado: ${carCode}`)}
             >
               Consultar Cor
             </button>
@@ -290,6 +226,98 @@ function App() {
           </div>
 
         </section>
+      )}
+
+      {/* PAGINA PAGAMENTO */}
+
+      {page === "pagamento" && (
+        <section className="max-w-xl mx-auto p-10">
+
+          <h2 className="text-3xl font-bold text-center mb-6">
+            Finalizar Compra
+          </h2>
+
+          <div className="bg-white p-6 rounded shadow space-y-4">
+
+            <input className="w-full border p-2 rounded" placeholder="Nome completo" />
+            <input className="w-full border p-2 rounded" placeholder="Email" />
+            <input className="w-full border p-2 rounded" placeholder="Endereço" />
+
+            <div className="border-t pt-4 font-bold text-lg">
+              Total: R$ {total.toFixed(2)}
+            </div>
+
+            <button
+              className="w-full bg-green-600 text-white py-3 rounded"
+              onClick={() => alert("Pagamento realizado com sucesso")}
+            >
+              Confirmar Pagamento
+            </button>
+
+          </div>
+
+        </section>
+      )}
+
+      {/* MODAL CARRINHO */}
+
+      {cartOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+
+          <div className="bg-white w-96 p-6 rounded shadow-lg">
+
+            <h2 className="text-2xl font-bold mb-4">
+              Carrinho
+            </h2>
+
+            {cart.length === 0 && <p>Carrinho vazio</p>}
+
+            {cart.map((item, index) => (
+              <div key={index} className="flex justify-between mb-2">
+
+                <div>
+                  <p className="font-semibold">{item.name}</p>
+                  <p>R$ {item.price.toFixed(2)}</p>
+                </div>
+
+                <button
+                  onClick={() => removeFromCart(index)}
+                  className="text-red-500"
+                >
+                  remover
+                </button>
+
+              </div>
+            ))}
+
+            <div className="mt-4 border-t pt-4 font-bold">
+              Total: R$ {total.toFixed(2)}
+            </div>
+
+            <div className="flex gap-3 mt-4">
+
+              <button
+                onClick={() => setCartOpen(false)}
+                className="w-full bg-gray-400 text-white py-2 rounded"
+              >
+                Fechar
+              </button>
+
+              <button
+                onClick={() => {
+                  setCartOpen(false);
+                  setPage("pagamento");
+                }}
+                className="w-full bg-green-600 text-white py-2 rounded"
+              >
+                Pagar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
       )}
 
     </div>
